@@ -67,6 +67,20 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <mainClass>com.swissre.interviews.Application</mainClass>
+                    <arguments>
+                        <argument>-c</argument>
+                        <argument>src/main/resources/citizens.csv</argument>
+                        <argument>-u</argument>
+                        <argument>src/main/resources/unsubscribed_citizens.csv</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <archive>
