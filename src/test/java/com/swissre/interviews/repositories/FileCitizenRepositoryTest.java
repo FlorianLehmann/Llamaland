@@ -70,20 +70,9 @@ class FileCitizenRepositoryTest {
     }
 
     @Test
-    void givenCitizenRegisteredTwiceWithSameEmail_ItShouldReturnAnEmptySet() throws IOException {
+    void givenDifferentCitizensRegisteredWithSameEmail_ItShouldReturnAnEmptySet() throws IOException {
         String citizensFileContent = "Brown,Bobby,10-11-1950,bobby.brown@ilovellamaland.com\n" +
-                "Brown,Bobby,10-11-1950,bobby.brown@ilovellamaland.com";
-        write(citizensFile, citizensFileContent);
-        FileCitizenRepository fileCitizenRepository = new FileCitizenRepository(citizensFile.toPath(), unsubscribedCitizensEmailFile.toPath());
-
-        assertThat(fileCitizenRepository.getCitizens()).isEmpty();
-    }
-
-    @Test
-    void givenCitizenRegisteredThreeTimesWithSameEmail_ItShouldReturnAnEmptySet() throws IOException {
-        String citizensFileContent = "Brown,Bobby,10-11-1950,bobby.brown@ilovellamaland.com\n" +
-                "Brown,Bobby,10-11-1950,bobby.brown@ilovellamaland.com\n" +
-                "Brown,Bobby,10-11-1950,bobby.brown@ilovellamaland.com";
+                "O'Rourke,Betsy,10-11-1950,bobby.brown@ilovellamaland.com";
         write(citizensFile, citizensFileContent);
         FileCitizenRepository fileCitizenRepository = new FileCitizenRepository(citizensFile.toPath(), unsubscribedCitizensEmailFile.toPath());
 

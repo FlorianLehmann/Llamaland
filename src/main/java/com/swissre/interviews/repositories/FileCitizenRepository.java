@@ -7,7 +7,9 @@ import org.apache.commons.csv.CSVRecord;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class FileCitizenRepository implements CitizenRepository {
@@ -27,23 +29,24 @@ public class FileCitizenRepository implements CitizenRepository {
     }
 
     public Set<Citizen> getCitizens() {
-        Set<Citizen> citizens = new HashSet<>();
-        Set<Citizen> duplicatedCitizens = new HashSet<>();
+        Map<String, Citizen> emailToCitizens = new HashMap<>();
+        Set<String> duplicatedEmails = new HashSet<>();
         Set<String> emailOfUnsubscribedCitizens = getEmailOfUnsubscribedCitizens();
 
         CSVReader.read(citizensFilepath, csvRecord -> {
             Citizen citizen = createCitizen(csvRecord, emailOfUnsubscribedCitizens);
 
-            if (citizens.contains(citizen)) {
-                duplicatedCitizens.add(citizen);
+            boolean emailAlreadyAssignedToDifferentCitizen = emailToCitizens.containsKey(citizen.getEmail());
+            if (emailAlreadyAssignedToDifferentCitizen) {
+                duplicatedEmails.add(citizen.getEmail());
             }
 
-            citizens.add(citizen);
+            emailToCitizens.put(citizen.getEmail(), citizen);
         });
 
-        citizens.removeAll(duplicatedCitizens);
+        emailToCitizens.entrySet().removeIf(entry -> duplicatedEmails.contains(entry.getKey()));
 
-        return citizens;
+        return new HashSet<>(emailToCitizens.values());
     }
 
     private Citizen createCitizen(CSVRecord record, Set<String> emailOfUnsubscribedCitizens) {
