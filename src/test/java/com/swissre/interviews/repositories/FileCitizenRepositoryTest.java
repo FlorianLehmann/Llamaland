@@ -69,6 +69,26 @@ class FileCitizenRepositoryTest {
         assertThat(fileCitizenRepository.getCitizens().stream().findFirst()).contains(expectedCitizen);
     }
 
+    @Test
+    void givenCitizenRegisteredTwiceWithSameEmail_ItShouldReturnAnEmptySet() throws IOException {
+        String citizensFileContent = "Brown,Bobby,10-11-1950,bobby.brown@ilovellamaland.com\n" +
+                "Brown,Bobby,10-11-1950,bobby.brown@ilovellamaland.com";
+        write(citizensFile, citizensFileContent);
+        FileCitizenRepository fileCitizenRepository = new FileCitizenRepository(citizensFile.toPath(), unsubscribedCitizensEmailFile.toPath());
+
+        assertThat(fileCitizenRepository.getCitizens()).isEmpty();
+    }
+
+    @Test
+    void givenCitizenRegisteredThreeTimesWithSameEmail_ItShouldReturnAnEmptySet() throws IOException {
+        String citizensFileContent = "Brown,Bobby,10-11-1950,bobby.brown@ilovellamaland.com\n" +
+                "Brown,Bobby,10-11-1950,bobby.brown@ilovellamaland.com\n" +
+                "Brown,Bobby,10-11-1950,bobby.brown@ilovellamaland.com";
+        write(citizensFile, citizensFileContent);
+        FileCitizenRepository fileCitizenRepository = new FileCitizenRepository(citizensFile.toPath(), unsubscribedCitizensEmailFile.toPath());
+
+        assertThat(fileCitizenRepository.getCitizens()).isEmpty();
+    }
 
     private void write(File file, String content) throws IOException {
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));

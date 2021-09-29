@@ -2,7 +2,6 @@ package com.swissre.interviews.repositories;
 
 import com.swissre.interviews.models.Citizen;
 import com.swissre.interviews.utils.CSVReader;
-import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
 import java.nio.file.Path;
@@ -29,12 +28,20 @@ public class FileCitizenRepository implements CitizenRepository {
 
     public Set<Citizen> getCitizens() {
         Set<Citizen> citizens = new HashSet<>();
+        Set<Citizen> duplicatedCitizens = new HashSet<>();
         Set<String> emailOfUnsubscribedCitizens = getEmailOfUnsubscribedCitizens();
 
         CSVReader.read(citizensFilepath, csvRecord -> {
             Citizen citizen = createCitizen(csvRecord, emailOfUnsubscribedCitizens);
+
+            if (citizens.contains(citizen)) {
+                duplicatedCitizens.add(citizen);
+            }
+
             citizens.add(citizen);
         });
+
+        citizens.removeAll(duplicatedCitizens);
 
         return citizens;
     }
