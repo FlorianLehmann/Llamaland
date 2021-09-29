@@ -24,6 +24,7 @@ public class CentenaryFinder {
         Set<Citizen> citizens = citizenRepository.getCitizens();
 
         return citizens.stream()
+                .filter(Citizen::hasSubscribed)
                 .filter(citizen -> isTurning100YearsOldInFourteenDays(citizen.getDateOfBirth()))
                 .collect(Collectors.toSet());
     }

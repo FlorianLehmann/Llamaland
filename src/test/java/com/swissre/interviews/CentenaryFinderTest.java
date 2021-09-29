@@ -59,6 +59,15 @@ class CentenaryFinderTest {
         assertThat(centenaryFinder.find()).containsExactlyInAnyOrder(citizen1, citizen2);
     }
 
+    @Test
+    public void givenACitizenWhoUnsubscribeAndTurning100YearsOldInFourteenDays_itShouldReturnAnEmptyList() {
+        Citizen citizen = citizen(NOW.minusYears(100).plusDays(14));
+        citizen.unsubscribe();
+        when(citizenRepository.getCitizens()).thenReturn(new HashSet<>(Collections.singletonList(citizen)));
+
+        assertThat(centenaryFinder.find()).isEmpty();
+    }
+
     private Citizen citizen(LocalDate dateOfBirth) {
         return new Citizen("Brown", "Bobby", dateOfBirth, "bobby@llamaland.com");
     }

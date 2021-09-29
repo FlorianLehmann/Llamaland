@@ -10,6 +10,7 @@ public class Citizen {
     private final String lastName;
     private final LocalDate dateOfBirth;
     private final String email;
+    private boolean hasSubscribed;
 
     public Citizen(String lastName, String firstName, LocalDate dateOfBirth, String email) {
         requireNonEmpty("lastName", lastName);
@@ -25,10 +26,15 @@ public class Citizen {
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
+        this.hasSubscribed = true;
     }
 
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    public boolean hasSubscribed() {
+        return hasSubscribed;
     }
 
     @Override
@@ -41,4 +47,7 @@ public class Citizen {
                 '}';
     }
 
+    public void unsubscribe() {
+        this.hasSubscribed = false;
+    }
 }

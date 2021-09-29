@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CitizenTest {
@@ -19,7 +20,7 @@ class CitizenTest {
 
     @Test
     public void shouldCreateCitizenGivenValidParameters() {
-        new Citizen(LAST_NAME, FIRST_NAME, DATE_OF_BIRTH, EMAIL);
+        citizen();
     }
 
     @ParameterizedTest
@@ -38,6 +39,24 @@ class CitizenTest {
                 Arguments.of(LAST_NAME, FIRST_NAME, LocalDate.now().plusYears(1), EMAIL),
                 Arguments.of(LAST_NAME, FIRST_NAME, DATE_OF_BIRTH, "bob@")
         );
+    }
+
+    @Test
+    public void shouldSubscribeToKingsEmailByDefault() {
+        Citizen citizen = citizen();
+        assertThat(citizen.hasSubscribed()).isTrue();
+    }
+
+    @Test
+    public void shouldSetSubscriptionToFalseWhenACitizenWantsToUnsubscribe() {
+        Citizen citizen = citizen();
+        citizen.unsubscribe();
+
+        assertThat(citizen.hasSubscribed()).isFalse();
+    }
+
+    private Citizen citizen() {
+        return new Citizen(LAST_NAME, FIRST_NAME, DATE_OF_BIRTH, EMAIL);
     }
 
 }
