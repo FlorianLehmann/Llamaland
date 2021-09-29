@@ -1,6 +1,7 @@
 package com.swissre.interviews.models;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import static com.swissre.interviews.utils.ObjectUtils.*;
 
@@ -33,8 +34,25 @@ public class Citizen {
         return dateOfBirth;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public boolean hasSubscribed() {
         return hasSubscribed;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Citizen citizen = (Citizen) o;
+        return hasSubscribed == citizen.hasSubscribed && Objects.equals(firstName, citizen.firstName) && Objects.equals(lastName, citizen.lastName) && Objects.equals(dateOfBirth, citizen.dateOfBirth) && Objects.equals(email, citizen.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, dateOfBirth, email, hasSubscribed);
     }
 
     @Override
@@ -44,6 +62,7 @@ public class Citizen {
                 ", lastName='" + lastName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", email='" + email + '\'' +
+                ", hasSubscribed=" + hasSubscribed +
                 '}';
     }
 

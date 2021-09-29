@@ -51,7 +51,7 @@ class CentenaryFinderTest {
     @Test
     public void givenCitizens_itShouldReturnOnlyTheCitizensTurning100YearsOldInFourteenDays() {
         Citizen citizen1 = citizen(NOW.minusYears(100).plusDays(14));
-        Citizen citizen2 = citizen(NOW.minusYears(100).plusDays(14));
+        Citizen citizen2 = citizen(NOW.minusYears(100).plusDays(14), "bob@gmail.com");
         Citizen citizen3 = citizen(NOW.minusYears(90));
 
         when(citizenRepository.getCitizens()).thenReturn(new HashSet<>(Arrays.asList(citizen1, citizen2, citizen3)));
@@ -69,7 +69,10 @@ class CentenaryFinderTest {
     }
 
     private Citizen citizen(LocalDate dateOfBirth) {
-        return new Citizen("Brown", "Bobby", dateOfBirth, "bobby@llamaland.com");
+        return citizen(dateOfBirth, "bobby@llamaland.com");
     }
 
+    private Citizen citizen(LocalDate dateOfBirth, String email) {
+        return new Citizen("Brown", "Bobby", dateOfBirth, email);
+    }
 }

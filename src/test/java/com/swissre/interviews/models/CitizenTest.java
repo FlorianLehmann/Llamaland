@@ -55,6 +55,13 @@ class CitizenTest {
         assertThat(citizen.hasSubscribed()).isFalse();
     }
 
+    @Test
+    public void givenTwoCitizensCreatedWithSameParameters_TheyShouldBeEqual() {
+        Citizen citizen1 = citizen();
+        Citizen citizen2 = citizen();
+        assertThat(citizen1).isEqualTo(citizen2);
+    }
+
     private Citizen citizen() {
         return new Citizen(LAST_NAME, FIRST_NAME, DATE_OF_BIRTH, EMAIL);
     }

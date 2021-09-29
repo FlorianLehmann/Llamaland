@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class CentenaryFinder {
 
-    public static final int CENTURY_IN_YEARS = 100;
+    private static final int CENTURY_IN_YEARS = 100;
 
     private final LocalDate now;
     private final CitizenRepository citizenRepository;
