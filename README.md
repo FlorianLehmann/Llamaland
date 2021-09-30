@@ -54,23 +54,23 @@ Based on the first assumption, we can merge both cases so that the king is notif
 ## Getting Started
 
 ```bash
-$ git clone https://github.com/FlorianLehmann/Llamaland.git
-$ cd Llamaland
+git clone https://github.com/FlorianLehmann/Llamaland.git
+cd Llamaland
 ```
 
 ### How to run the application?
 
 
 ```bash
-$ mvn clean package
-$ mvn exec:java
+mvn clean package
+mvn exec:java
 ```
 
 or
 
 ```bash
-$ docker build . -t llamaland
-$ docker run --rm llamaland
+docker build . -t llamaland
+docker run --rm llamaland
 ```
 
 Note: The timezone is set to UTC in the docker container.
@@ -78,13 +78,13 @@ Note: The timezone is set to UTC in the docker container.
 ### How to run the tests?
 
 ```bash
-$ mvn clean test
+mvn clean test
 ```
 
 ### How to build the application?
 
 ```bash
-$ mvn clean package
+mvn clean package
 ```
 
 ## Generating sample files
