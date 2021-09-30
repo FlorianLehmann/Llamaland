@@ -109,7 +109,7 @@ fake = Faker()
 citizens_file_path: str = "/tmp/citizens.csv"
 unsubscribed_citizens_file_path: str = "/tmp/unsubscribed_citizens.csv"
 
-nb_citizens: int = 100_000
+nb_citizens: int = 50_000
 nb_unsubscribed_citizens: int = 100
 
 
@@ -139,6 +139,15 @@ def generate_emails(size: int) -> List[str]:
 def generate_citizens_file(file_path: str):
     citizens: List[str] = generate_citizens(nb_citizens)
     write_to_file(file_path, '\n'.join(citizens))
+
+
+def generate_unsubscribed_citizens_file(file_path: str):
+    emails: List[str] = generate_emails(nb_unsubscribed_citizens)
+    write_to_file(file_path, '\n'.join(emails))
+
+
+generate_citizens_file(citizens_file_path)
+generate_unsubscribed_citizens_file(unsubscribed_citizens_file_path)
 ```
 
 ## Architecture
