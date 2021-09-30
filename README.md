@@ -49,6 +49,7 @@ Based on the first assumption, we can merge both cases so that the king is notif
 
 - Java Development Kit 8
 - Maven
+- Docker (optional)
 
 ## Getting Started
 
@@ -64,6 +65,15 @@ $ cd Llamaland
 $ mvn clean package
 $ mvn exec:java
 ```
+
+or
+
+```bash
+$ docker build . -t llamaland
+$ docker run --rm llamaland
+```
+
+Note: The timezone is set to UTC in the docker container.
 
 ### How to run the tests?
 
