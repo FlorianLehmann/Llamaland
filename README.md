@@ -87,6 +87,52 @@ $ mvn clean test
 $ mvn clean package
 ```
 
+## Generating sample files
+
+The following python script can be used to generate the input files: (tested with python 3.9.7)
+
+```python
+from typing import List
+
+from faker import Faker
+
+fake = Faker()
+
+citizens_file_path: str = "/tmp/citizens.csv"
+unsubscribed_citizens_file_path: str = "/tmp/unsubscribed_citizens.csv"
+
+nb_citizens: int = 100_000
+nb_unsubscribed_citizens: int = 100
+
+
+def write_to_file(file_path: str, content: str):
+    f = open(file_path, "w")
+    f.write(content)
+    f.close()
+
+
+def generate_citizens(size: int) -> List[str]:
+    citizens = []
+    for i in range(size):
+        date_of_birth = fake.date_time_between(start_date='-110y', end_date='now').strftime("%d-%m-%Y")
+        lastname, firstname = fake.last_name(), fake.first_name()
+        citizens.append(f"{lastname},{firstname},{date_of_birth},{firstname}.{lastname}@llamaland.com")
+    return citizens
+
+
+def generate_emails(size: int) -> List[str]:
+    emails = []
+    for i in range(size):
+        lastname, firstname = fake.last_name(), fake.first_name()
+        emails.append(f"{firstname}.{lastname}@llamaland.com")
+    return emails
+
+
+def generate_citizens_file(file_path: str):
+    citizens: List[str] = generate_citizens(nb_citizens)
+    write_to_file(file_path, '\n'.join(citizens))
+```
+
 ## Architecture
 
 ### Data flow diagram
