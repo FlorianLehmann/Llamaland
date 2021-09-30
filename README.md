@@ -45,7 +45,7 @@ Based on the first assumption, we can merge both cases so that the king is notif
 
 - A citizen must have a first name, last name, date of birth and a valid email address
 
-### Requirements
+## Requirements
 
 - Java Development Kit 8
 - Maven
@@ -89,7 +89,15 @@ $ mvn clean package
 
 ## Generating sample files
 
-The following python script can be used to generate the input files: (tested with python 3.9.7)
+In order to generate larger sample files, I created the following python script.
+
+### Requirements
+
+- Python >= 3.6 (tested with python 3.9.7)
+- Pip
+- Faker library installed with pip ($ pip install Faker)
+
+### Script
 
 ```python
 from typing import List
