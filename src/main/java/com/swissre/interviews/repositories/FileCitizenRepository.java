@@ -2,7 +2,7 @@ package com.swissre.interviews.repositories;
 
 import com.swissre.interviews.models.Citizen;
 import com.swissre.interviews.utils.CSVReader;
-import org.apache.commons.csv.CSVRecord;
+import com.swissre.interviews.utils.CSVRecord;
 
 import java.nio.file.Path;
 import java.time.LocalDate;

@@ -7,8 +7,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ApplicationArgsTest {
 
@@ -22,8 +21,8 @@ class ApplicationArgsTest {
 
         applicationArgs = new ApplicationArgs(args);
 
-        assertThat(applicationArgs.getCitizensFilepath().toString()).isEqualTo(citizensFilepath);
-        assertThat(applicationArgs.getUnsubscribedCitizensEmailFilepath().toString()).isEqualTo(unsubscribedCitizensEmailFilepath);
+        assertEquals(citizensFilepath, applicationArgs.getCitizensFilepath().toString());
+        assertEquals(unsubscribedCitizensEmailFilepath, applicationArgs.getUnsubscribedCitizensEmailFilepath().toString());
     }
 
     @ParameterizedTest

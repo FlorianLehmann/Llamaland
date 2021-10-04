@@ -8,8 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CitizenTest {
 
@@ -44,7 +43,7 @@ class CitizenTest {
     @Test
     public void shouldSubscribeToKingsEmailByDefault() {
         Citizen citizen = citizen();
-        assertThat(citizen.hasSubscribed()).isTrue();
+        assertTrue(citizen.hasSubscribed());
     }
 
     @Test
@@ -52,14 +51,14 @@ class CitizenTest {
         Citizen citizen = citizen();
         citizen.unsubscribe();
 
-        assertThat(citizen.hasSubscribed()).isFalse();
+        assertFalse(citizen.hasSubscribed());
     }
 
     @Test
     public void givenTwoCitizensCreatedWithSameParameters_TheyShouldBeEqual() {
         Citizen citizen1 = citizen();
         Citizen citizen2 = citizen();
-        assertThat(citizen1).isEqualTo(citizen2);
+        assertEquals(citizen1, citizen2);
     }
 
     private Citizen citizen() {

@@ -1,27 +1,36 @@
 package com.swissre.interviews;
 
-import org.apache.commons.cli.*;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ApplicationArgs {
 
-    private final Path citizensFilepath;
-    private final Path unsubscribedCitizensEmailFilepath;
+    private static final String CITIZENS_FILE_FLAG = "-c";
+    private static final String UNSUBSCRIBED_CITIZENS_FILE_FLAG = "-u";
+
+    private Path citizensFilepath;
+    private Path unsubscribedCitizensEmailFilepath;
 
     public ApplicationArgs(String[] args) {
-        Options options = new Options();
-        options.addRequiredOption("c","citizens", true, "To specify the file containing citizens data");
-        options.addRequiredOption("u","unsubscribed-citizens", true, "To specify the file containing emails of unsubscribed citizens");
+        Map<String, String> flagToValue = new HashMap<>();
+        for (int i = 0; i < args.length; i++) {
+            if (CITIZENS_FILE_FLAG.equals(args[i])) {
+                citizensFilepath = Paths.get(args[i+1]);
+            }
 
-        CommandLineParser parser = new DefaultParser();
-        try {
-            CommandLine cmd = parser.parse( options, args);
-            citizensFilepath = Paths.get(cmd.getOptionValue("c"));
-            unsubscribedCitizensEmailFilepath = Paths.get(cmd.getOptionValue("u"));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+            if (UNSUBSCRIBED_CITIZENS_FILE_FLAG.equals(args[i])) {
+                unsubscribedCitizensEmailFilepath = Paths.get(args[i+1]);
+            }
+        }
+
+        if (citizensFilepath == null) {
+            throw new RuntimeException("File containing citizens is required. (-c <path>)");
+        }
+
+        if (unsubscribedCitizensEmailFilepath == null) {
+            throw new RuntimeException("File containing unsubscribed citizens is required. (-u <path>)");
         }
     }
 

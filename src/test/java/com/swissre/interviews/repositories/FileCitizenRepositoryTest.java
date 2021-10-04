@@ -11,7 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 class FileCitizenRepositoryTest {
     private File citizensFile;
@@ -33,16 +33,7 @@ class FileCitizenRepositoryTest {
     void givenEmptyFiles_ItShouldReturnAnEmptySet() {
         FileCitizenRepository fileCitizenRepository = new FileCitizenRepository(citizensFile.toPath(), unsubscribedCitizensEmailFile.toPath());
 
-        assertThat(fileCitizenRepository.getCitizens()).isEmpty();
-    }
-
-    @Test
-    void givenOneRegisteredCitizen_ItShouldReturnASetWithASingleItem() throws IOException {
-        String citizensFileContent = "Brown,Bobby,10-11-1950,bobby.brown@ilovellamaland.com";
-        write(citizensFile, citizensFileContent);
-        FileCitizenRepository fileCitizenRepository = new FileCitizenRepository(citizensFile.toPath(), unsubscribedCitizensEmailFile.toPath());
-
-        assertThat(fileCitizenRepository.getCitizens()).hasSize(1);
+        assert(fileCitizenRepository.getCitizens()).isEmpty();
     }
 
     @Test
@@ -52,7 +43,8 @@ class FileCitizenRepositoryTest {
         FileCitizenRepository fileCitizenRepository = new FileCitizenRepository(citizensFile.toPath(), unsubscribedCitizensEmailFile.toPath());
 
         Citizen expectedCitizen = new Citizen("Brown", "Bobby", LocalDate.of(1950, 11, 10), "bobby.brown@ilovellamaland.com");
-        assertThat(fileCitizenRepository.getCitizens().stream().findFirst()).contains(expectedCitizen);
+        assertEquals(1, fileCitizenRepository.getCitizens().size());
+        assertEquals(expectedCitizen, fileCitizenRepository.getCitizens().stream().findFirst().get());
     }
 
     @Test
@@ -66,7 +58,8 @@ class FileCitizenRepositoryTest {
         Citizen expectedCitizen = new Citizen("Brown", "Bobby", LocalDate.of(1950, 11, 10), "bobby.brown@ilovellamaland.com");
         expectedCitizen.unsubscribe();
 
-        assertThat(fileCitizenRepository.getCitizens().stream().findFirst()).contains(expectedCitizen);
+        assertEquals(1, fileCitizenRepository.getCitizens().size());
+        assertEquals(expectedCitizen, fileCitizenRepository.getCitizens().stream().findFirst().get());
     }
 
     @Test
@@ -76,7 +69,7 @@ class FileCitizenRepositoryTest {
         write(citizensFile, citizensFileContent);
         FileCitizenRepository fileCitizenRepository = new FileCitizenRepository(citizensFile.toPath(), unsubscribedCitizensEmailFile.toPath());
 
-        assertThat(fileCitizenRepository.getCitizens()).isEmpty();
+        assertTrue(fileCitizenRepository.getCitizens().isEmpty());
     }
 
     private void write(File file, String content) throws IOException {

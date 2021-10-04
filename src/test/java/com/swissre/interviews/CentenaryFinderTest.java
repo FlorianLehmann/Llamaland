@@ -6,46 +6,43 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CentenaryFinderTest {
 
     public static final LocalDate NOW = LocalDate.now();
 
     private CentenaryFinder centenaryFinder;
-    private CitizenRepository citizenRepository;
+    private InMemoryCitizenRepository citizenRepository;
 
     @BeforeEach
     void setUp() {
-        citizenRepository = mock(CitizenRepository.class);
+        citizenRepository = new InMemoryCitizenRepository();
         centenaryFinder = new CentenaryFinder(citizenRepository, () -> NOW);
     }
 
     @Test
     public void givenNoCitizen_itShouldReturnAnEmptyList() {
-        assertThat(centenaryFinder.find()).isEmpty();
+        assertTrue(centenaryFinder.find().isEmpty());
     }
 
     @Test
     public void givenA90YearsOldCitizen_itShouldReturnAnEmptyList() {
         Citizen citizen = citizen(NOW.minusYears(90));
-        when(citizenRepository.getCitizens()).thenReturn(new HashSet<>(Collections.singletonList(citizen)));
+        citizenRepository.addCitizen(citizen);
 
-        assertThat(centenaryFinder.find()).isEmpty();
+        assertTrue(centenaryFinder.find().isEmpty());
     }
 
     @Test
     public void givenACitizenTurning100YearsOldInFourteenDays_itShouldReturnTheCitizen() {
         Citizen citizen = citizen(NOW.minusYears(100).plusDays(14));
-        when(citizenRepository.getCitizens()).thenReturn(new HashSet<>(Collections.singletonList(citizen)));
+        citizenRepository.addCitizen(citizen);
 
-        assertThat(centenaryFinder.find()).containsExactly(citizen);
+        assertEquals(1, centenaryFinder.find().size());
+        assertTrue(centenaryFinder.find().contains(citizen));
     }
 
     @Test
@@ -54,18 +51,22 @@ class CentenaryFinderTest {
         Citizen citizen2 = citizen(NOW.minusYears(100).plusDays(14), "bob@gmail.com");
         Citizen citizen3 = citizen(NOW.minusYears(90));
 
-        when(citizenRepository.getCitizens()).thenReturn(new HashSet<>(Arrays.asList(citizen1, citizen2, citizen3)));
+        citizenRepository.addCitizen(citizen1);
+        citizenRepository.addCitizen(citizen2);
+        citizenRepository.addCitizen(citizen3);
 
-        assertThat(centenaryFinder.find()).containsExactlyInAnyOrder(citizen1, citizen2);
+        Set<Citizen> results = centenaryFinder.find();
+        assertTrue(results.contains(citizen1));
+        assertTrue(results.contains(citizen2));
     }
 
     @Test
     public void givenACitizenWhoUnsubscribeAndTurning100YearsOldInFourteenDays_itShouldReturnAnEmptyList() {
         Citizen citizen = citizen(NOW.minusYears(100).plusDays(14));
         citizen.unsubscribe();
-        when(citizenRepository.getCitizens()).thenReturn(new HashSet<>(Collections.singletonList(citizen)));
+        citizenRepository.addCitizen(citizen);
 
-        assertThat(centenaryFinder.find()).isEmpty();
+        assertTrue(centenaryFinder.find().isEmpty());
     }
 
     private Citizen citizen(LocalDate dateOfBirth) {
@@ -74,5 +75,19 @@ class CentenaryFinderTest {
 
     private Citizen citizen(LocalDate dateOfBirth, String email) {
         return new Citizen("Brown", "Bobby", dateOfBirth, email);
+    }
+
+    private class InMemoryCitizenRepository implements CitizenRepository {
+
+        private Set<Citizen> citizens = new HashSet<>();
+
+        public void addCitizen(Citizen citizen) {
+            citizens.add(citizen);
+        }
+
+        @Override
+        public Set<Citizen> getCitizens() {
+            return new HashSet<>(citizens);
+        }
     }
 }

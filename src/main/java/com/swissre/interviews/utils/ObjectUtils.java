@@ -1,12 +1,14 @@
 package com.swissre.interviews.utils;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.validator.routines.EmailValidator;
+import java.util.regex.Pattern;
 
 public class ObjectUtils {
 
+    private static final Pattern SIMPLE_EMAIL_PATTERN = Pattern.compile("^(.+)@(\\S+)$");
+
     public static void requireNonEmpty(String attributeName, String value) {
-        if (StringUtils.isBlank(value)) {
+        boolean isBlank = value == null || value.trim().length() == 0;
+        if (isBlank) {
             throw new IllegalArgumentException(attributeName + " should not be empty nor null");
         }
     }
@@ -18,7 +20,8 @@ public class ObjectUtils {
     }
 
     public static void requireValidEmail(String attributeName, String email) {
-        if (!EmailValidator.getInstance().isValid(email)) {
+        requireNonNull(attributeName, email);
+        if (!SIMPLE_EMAIL_PATTERN.matcher(email).find()) {
             throw new IllegalArgumentException(attributeName + " is not valid");
         }
     }
